@@ -26,9 +26,31 @@ class _QuizPageState extends State<QuizPage> {
     '¿Los globulos rojos viven 4 meses?',
     'El cuerpo humano adulto tiene 306 huesos',
     'La cobalamina es una vitamina',
+    'Egipto se encuentra al Noreste de África',
+    'Todas las palabras agudas llevan tilde',
+    'Fin del Cuestinario, Si quieres volver a empezar has Click en cualquier Boton'
   ];
 
+  List<bool> respuestas = [true, false, true, true, false, true];
+
   int numeroPregunta = 0;
+
+  void ponerMarca(valor) {
+    if (valor) {
+      puntuacion.add(const Icon(
+        Icons.check,
+        color: Color.fromARGB(255, 18, 159, 23),
+        size: 30,
+      ));
+    } else {
+      puntuacion.add(const Icon(
+        Icons.close,
+        color: Colors.red,
+        size: 30,
+      ));
+    }
+    numeroPregunta++;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +84,8 @@ class _QuizPageState extends State<QuizPage> {
                 child: TextButton(
                     onPressed: () {
                       setState(() {
-                        numeroPregunta++;
-                        puntuacion.add(const Icon(
-                          Icons.check,
-                          color: Color.fromARGB(255, 18, 159, 23),
-                          size: 30,
-                        ));
+                        ponerMarca(respuestas[numeroPregunta]);
+                        checarLongitud();
                       });
                     },
                     child: const Text(
@@ -89,12 +107,8 @@ class _QuizPageState extends State<QuizPage> {
                 child: TextButton(
                     onPressed: () {
                       setState(() {
-                        numeroPregunta++;
-                        puntuacion.add(const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                          size: 30,
-                        ));
+                        ponerMarca(!respuestas[numeroPregunta]);
+                        checarLongitud();
                       });
                     },
                     child: const Text(
@@ -111,5 +125,12 @@ class _QuizPageState extends State<QuizPage> {
         ),
       ],
     );
+  }
+
+  void checarLongitud() {
+    if (numeroPregunta == preguntas.length) {
+      numeroPregunta = 0;
+      puntuacion.clear();
+    }
   }
 }
